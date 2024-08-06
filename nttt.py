@@ -2,12 +2,16 @@ import time
 import random
 
 # Global vars
-board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-separator = "#######################################################################"
+board_dimension = 0
+board = []
 
 def main():
     welcome_message()
     
+    # Welcome message retrieves board dimensions. Now update the board.
+    for _ in range(board_dimension + 1):
+        board.append([0] * board_dimension)
+    display_board()
     # player x goes first, let x be True and player o be False.
     turn = True
     turn_num = 0
@@ -30,7 +34,7 @@ def main():
         if found_win(move):
             break
         turn = not turn
-        print(separator)
+        print("#######################################################################")
     if turn_num < 9:
         winner = "x" if turn else "o"
         print(f"{winner} wins!")
@@ -44,18 +48,27 @@ def welcome_message():
     y = random.uniform(0.5, 1.5)
     z = random.uniform(0.75, 1.5)
     print("Loading...")
-    time.sleep(x)
+    # time.sleep(x)
     print("Loading.....")
-    time.sleep(y)
+    # time.sleep(y)
     print("Loading............")
-    time.sleep(z)
-    print("Pay attention to whose move it is. Then, enter a square to make a move.")
+    # time.sleep(z)
+    while True:
+        try: 
+            dimensions = int(input("How many dimensions do you want?"))
+            if(3 <= dimensions <= 26):
+                break
+            else:
+                print("Please enter a number between 3 and 26.")
+        except ValueError:
+            print("Please enter in a number.")
+    print("Pay attention to who's move it is. Then, enter a square to make a move.")
     time.sleep(2)
-    print("Valid moves include: a1, a2, a3, b1, b2, b3, c1, c2, c3")
+    print("Look at the numbers and letters to find valid moves. Write the letter first, then the number.")
     time.sleep(2)
-    print(separator)
-    display_board()
-    print(separator)
+    print("#######################################################################")
+    board_dimension = dimensions
+    
     
     
 def valid_move(move):
@@ -104,8 +117,8 @@ def translate_move(move):
 def display_board():
     columns = ["3", "2", "1"]
     rows = "a   b   c"
-    square_separator = " # "
-    row_separator = "   #########"
+    square_separater = " # "
+    row_separater = "   #########"
     print("\n")
     for i in range(len(board)):
         print(columns[i], end="  ")
@@ -117,9 +130,9 @@ def display_board():
             else:
                 print("o", end="")
             if (j != len(board[0]) - 1):
-                print(square_separator, end="")
+                print(square_separater, end="")
         if (i != len(board) - 1):
-            print("\n" + row_separator)
+            print("\n" + row_separater)
     print("\n   " + rows + "\n")
     
     
